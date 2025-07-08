@@ -1,0 +1,97 @@
+---
+description: Basic guide for creating, updating, or reading code. Read this before doing anything.
+globs: 
+alwaysApply: false
+---
+## **Avoid `export default`, Use Named Exports with Arrow Functions**
+
+### **Rule**
+
+Do not use `export default`. Instead, use named exports and arrow functions for defining components.
+
+### **Bad Example**
+
+```tsx
+// ❌ Bad: Using default export and function declaration
+function ClientSidebar() {
+   return <div>example</div>
+}
+
+export default ClientSidebar
+
+// ❌ Bad: Importing default export
+import ClientSidebar from '~/components/clients/ClientSidebar'
+
+```
+
+### **Good Example**
+
+```tsx
+// ✅ Good: Using named export with arrow function
+export const ClientSidebar = () => {
+   return <div>example</div>
+}
+
+// ✅ Good: Importing named export
+import { ClientSidebar } from '~/components/clients/ClientSidebar'
+
+```
+
+### **Why This Rule is Good**
+
+1. **Better Auto-Completion and Refactoring Support**
+    
+    Named exports provide better support for auto-completion in IDEs, making it easier to find and import components correctly.
+    
+2. **Avoids Ambiguous Component Names**
+    
+    Default exports can be imported with any name, which can lead to inconsistencies across the codebase. Named exports enforce a consistent naming convention.
+    
+3. **Easier to Find and Rename**
+    
+    When using named exports, refactoring and renaming components is easier, as tools like TypeScript and ESLint can track component names more reliably.
+    
+4. **Encourages Consistent Code Style**
+    
+    Using named exports and arrow functions promotes a consistent style across the codebase, reducing cognitive load when reading or maintaining the code.
+    
+5. **Prevents Accidental Multiple Exports**
+    
+    With default exports, it's easy to accidentally export multiple things from a file incorrectly. Named exports make it explicit which items are exported.
+
+## Use `React.useState`, `React.useEffect`, etc. Instead of Importing `useState`, `useEffect`, etc.
+
+### **Rule**
+
+Always use `React.useState`, `React.useEffect`, and other React hooks directly from the `React` object, instead of importing them individually.
+
+### **Example**
+
+```tsx
+// ❌ Bad: Using default export and function declaration
+import { useState } from "react";
+
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+
+// ✅ Good: Using named export with React object
+import React from "react";
+
+const [email, setEmail] = React.useState("");
+const [password, setPassword] = React.useState("");
+
+```
+
+### **Why This Rule is Good**
+
+1. **Consistency**
+    
+    By referencing hooks through `React.useState`, `React.useEffect`, etc., we maintain consistency across the application. Using the `React` object explicitly avoids confusion and makes it clear that these are core React APIs.
+    
+2. **Prevents Unnecessary Imports**
+    
+    When you use `React.useState`, you avoid importing individual hooks from React. This helps reduce unnecessary imports and keeps your code more compact, which can make it easier to manage, especially in larger projects.
+    
+3. **Readability**
+    
+    When you use `React.useState`, it is immediately clear to anyone reading the code that the hook comes from React. This improves the clarity of your code and eliminates any ambiguity that might arise from using local imports.
