@@ -3,7 +3,7 @@ name: CI for Pull Request to main
 on:
   pull_request:
     branches:
-      - main   # mainブランチへのPRのときにトリガーされる
+      - main # mainブランチへのPRのときにトリガーされる
 
 jobs:
   lint-and-build:
