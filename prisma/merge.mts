@@ -21,7 +21,10 @@ datasource db {
 }\n\n`
 
 // models/*.prisma を結合
-const modelFiles = fs.readdirSync(modelsDir).filter((file) => file.endsWith('.prisma')).sort()
+const modelFiles = fs
+  .readdirSync(modelsDir)
+  .filter((file) => file.endsWith('.prisma'))
+  .sort()
 
 const body = modelFiles
   .map((file) => fs.readFileSync(path.join(modelsDir, file), 'utf-8'))
