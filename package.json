@@ -8,9 +8,13 @@
     "start": "next start",
     "fix:prettier": "prettier --write .",
     "lint": "next lint",
-    "lint:fix": "next lint --fix"
+    "lint:fix": "next lint --fix",
+    "prisma:merge": "tsx prisma/merge.mts",
+    "prisma:migrate": "npm run prisma:merge && prisma migrate dev"
   },
   "dependencies": {
+    "@prisma/client": "^6.11.1",
+    "@supabase/supabase-js": "^2.50.4",
     "next": "15.3.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -26,7 +30,9 @@
     "eslint-config-next": "15.3.5",
     "eslint-config-prettier": "^10.1.5",
     "prettier": "^3.6.2",
+    "prisma": "^6.11.1",
     "tailwindcss": "^4",
+    "tsx": "^4.20.3",
     "typescript": "^5"
   }
 }
