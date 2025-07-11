@@ -120,22 +120,64 @@ supabase start
 | **PostgreSQL**                | `127.0.0.1:54322`        | `postgres / postgres` で接続 (Prisma・psql・DBeaver など) |
 | **Supabase Studio (GUI)**     | `http://127.0.0.1:54323` | 初回ログインは `supabase / supabase`                      |
 
-### 3. `.env.local` を作成してフロントと Prisma をローカル DB に向ける
+### 4. `.env.local` を作成してフロントと Prisma をローカル DB に向ける
 
 ```dotenv
-# --- Supabase ---
+# --- Supabase (ローカル開発用) ---
 NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<supabase start の anon key>
 
-# --- Prisma / Postgres ---
+# --- Prisma / Postgres (ローカル開発用) ---
 DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:54322/postgres"
-DIRECT_URL="postgresql://postgres:postgres@127.0.0.1:54322/postgres"
+DIRECT_URL="postgresql://postgres:postgres@127.0.0.54322/postgres"
+
+# --- NextAuth.js (開発環境) ---
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-development-secret-key
+
+# --- Auth0 (Twitter認証用) ---
+AUTH0_ID=temp-auth0-client-id
+AUTH0_SECRET=temp-auth0-client-secret
+AUTH0_ISSUER=https://temp.auth0.com
+
+# --- GitHub (直接認証) ---
+GITHUB_ID=temp-github-client-id
+GITHUB_SECRET=temp-github-client-secret
+
+# --- Google (直接認証) ---
+GOOGLE_ID=temp-google-client-id
+GOOGLE_SECRET=temp-google-client-secret
 ```
 
-> `.env.local` は **git にコミットしません**。各自が自分の PC で作成してください。
-> 変更後は `npm run dev` を再起動して env を再読込させます。
+> **本番環境での設定**
+>
+> Vercel Dashboard の Environment Variables で以下を設定：
+>
+> ```dotenv
+> # --- NextAuth.js (本番環境) ---
+> NEXTAUTH_URL=https://your-domain.vercel.app
+> NEXTAUTH_SECRET=your-production-secret-key
+>
+> # --- Auth0 (Twitter認証用) ---
+> AUTH0_ID=real-auth0-client-id
+> AUTH0_SECRET=real-auth0-client-secret
+> AUTH0_ISSUER=https://your-domain.auth0.com
+>
+> # --- GitHub (直接認証) ---
+> GITHUB_ID=real-github-client-id
+> GITHUB_SECRET=real-github-client-secret
+>
+> # --- Google (直接認証) ---
+> GOOGLE_ID=real-google-client-id
+> GOOGLE_SECRET=real-google-client-secret
+>
+> # --- Supabase (本番環境) ---
+> NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+> NEXT_PUBLIC_SUPABASE_ANON_KEY=your-production-anon-key
+> DATABASE_URL=your-production-database-url
+> ```
 
-### 4. Prisma マイグレーション (ローカル DB)
+### 5. Prisma マイグレーション (ローカル DB)
 
 ```bash
 # schema.prisma を編集したあと
