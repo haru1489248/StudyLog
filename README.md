@@ -1,36 +1,169 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# StudyLog
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-2.x-green?style=for-the-badge&logo=supabase)](https://supabase.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-6-orange?style=for-the-badge&logo=prisma)](https://www.prisma.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 
-First, run the development server:
+Next.js (App Router) + Supabase + Prisma を使った **学習ログ管理アプリ** です。
+ローカル開発・本番デプロイまでの手順を 1 ファイルにまとめました。
+
+---
+
+## 目次
+
+1. [技術スタック](#技術スタック)
+2. [アプリケーション](#-アプリケーション)
+3. [前提条件 (Prerequisites)](#前提条件-prerequisites)
+4. [クイックスタート](#クイックスタート)
+5. [環境変数の管理方式](#環境変数の管理方式)
+6. [ローカル Supabase (バックエンド) の起動](#ローカル-supabase-バックエンド-の起動)
+7. [Prisma ワークフロー](#prisma-ワークフロー)
+8. [スクリプト一覧](#スクリプト一覧)
+9. [本番デプロイ (Vercel)](#本番デプロイ-vercel)
+10. [CI / CD メモ](#ci--cd-メモ)
+11. [ライセンス](#ライセンス)
+
+---
+
+## 技術スタック
+
+| 分類         | ツール                                   | 備考                                        |
+| ------------ | ---------------------------------------- | ------------------------------------------- |
+| フロント     | **Next.js 15 (App Router)**              | TypeScript / Tailwind CSS                   |
+| 状態管理     | TanStack Query (v5)                      | `src/app/providers.tsx` で統合              |
+| UI           | Tailwind CSS + shadcn/ui                 | 必要に応じて追加                            |
+| 認証         | next-auth (メール — 後日 OAuth 追加予定) | ロール管理も対応                            |
+| バックエンド | **Supabase (PostgreSQL 17)**             | CLI でローカル Docker 起動                  |
+| ORM          | **Prisma 6**                             | models/ ディレクトリをマルチファイル管理    |
+| ホスティング | **Vercel**                               | Docker 不要。環境変数は Vercel Dashboard へ |
+| 監視         | Sentry (後日)                            | –                                           |
+
+---
+
+## 📸 アプリケーション
+
+> **スクリーンショットを追加予定**
+>
+> アプリの主要画面のスクリーンショットをここに追加します。
+
+---
+
+## 前提条件 (Prerequisites)
+
+| ツール             | バージョンの目安       |
+| ------------------ | ---------------------- |
+| **Node.js**        | 18 以上 (推奨 20)      |
+| **Docker Desktop** | 最新                   |
+| **Supabase CLI**   | `supabase -v` → 2.x 系 |
+| Git                | –                      |
+
+> **Supabase CLI のインストール**
+>
+> - macOS (Homebrew)：`brew install supabase/tap/supabase`
+> - Windows (Scoop) ：`scoop install supabase`
+> - Linux (npm) ：`npm create supabase@latest` (プロンプトで PATH を通す)
+
+---
+
+## クイックスタート
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-org/studylog.git
+cd studylog
+
+# 依存関係をインストール
+npm ci             # または pnpm i / yarn
+
+# (オプション) Supabase スタックを起動したい場合
+supabase start
+
+# 開発サーバー起動
+npm run dev        # => http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ローカル Supabase (バックエンド) の起動
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+ローカル環境でも Postgres・Auth・Storage をフルで再現できます。
+**Supabase CLI が必須**なので、まだ入れていないメンバーは先にインストールしてください。
 
-## Learn More
+### 0. Supabase CLI インストール
 
-To learn more about Next.js, take a look at the following resources:
+| OS               | 推奨コマンド                                                                  |
+| ---------------- | ----------------------------------------------------------------------------- |
+| macOS (Homebrew) | `brew install supabase/tap/supabase`                                          |
+| Windows (Scoop)  | `scoop install supabase`                                                      |
+| Linux (npm)      | `npm create supabase@latest` <br>→ プロンプトで `global` を選択し PATH を通す |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+supabase -v   # 2.x 系が表示されれば OK
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1. スタックを起動する
 
-## Deploy on Vercel
+```bash
+# リポジトリ直下で
+supabase start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 初回は Docker イメージを pull するため数分かかります。
+- 起動ログに **anon key / JWT secret** などが表示されるので控えておくと便利です。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 2. 主要エンドポイント
+
+| 機能                          | URL / ポート             | 備考                                                      |
+| ----------------------------- | ------------------------ | --------------------------------------------------------- |
+| **REST / Auth / Storage API** | `http://127.0.0.1:54321` | フロントから呼び出す基盤 API                              |
+| **PostgreSQL**                | `127.0.0.1:54322`        | `postgres / postgres` で接続 (Prisma・psql・DBeaver など) |
+| **Supabase Studio (GUI)**     | `http://127.0.0.1:54323` | 初回ログインは `supabase / supabase`                      |
+
+### 3. `.env.local` を作成してフロントと Prisma をローカル DB に向ける
+
+```dotenv
+# --- Supabase ---
+NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<supabase start の anon key>
+
+# --- Prisma / Postgres ---
+DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:54322/postgres"
+DIRECT_URL="postgresql://postgres:postgres@127.0.0.1:54322/postgres"
+```
+
+> `.env.local` は **git にコミットしません**。各自が自分の PC で作成してください。
+> 変更後は `npm run dev` を再起動して env を再読込させます。
+
+### 4. Prisma マイグレーション (ローカル DB)
+
+```bash
+# schema.prisma を編集したあと
+npm run db:migrate --name <migration_name>
+```
+
+- ローカル DB が更新され、`prisma/migrations/` に SQL が生成されます。
+- 生成されたマイグレーションを git push → 本番環境では `prisma migrate deploy` で適用します。
+
+### 5. スタックの停止／リセット
+
+| 操作        | コマンド            | 効果                                     |
+| ----------- | ------------------- | ---------------------------------------- |
+| 停止        | `supabase stop`     | Docker コンテナを停止                    |
+| DB リセット | `supabase db reset` | テーブル初期化・anon key 再生成 (開発用) |
+
+---
+
+> **FAQ**
+>
+> - **CLI を入れたくない人は開発できる？**
+>   基本はできません。CLI が内部で Docker Compose を生成しコンテナを管理するため、
+>   Supabase CLI の導入はローカル開発の前提としてください。
+> - **本番 Supabase にはどう適用する？**
+>   CI や手動で `prisma migrate deploy` を実行し、本番用 `DATABASE_URL` で接続してください。
+> - **anon key は毎回変わる？**
+>   `supabase db reset` 時だけ再発行されます。通常の `stop`→`start` では変わりません。
+
+---
+
+以降の項目については必要に応じて追記してください。
