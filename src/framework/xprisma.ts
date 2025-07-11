@@ -14,3 +14,6 @@ export const xprisma =
 if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.xprisma = xprisma
 }
+
+// デフォルトエクスポートを追加
+export default xprisma
