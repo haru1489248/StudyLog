@@ -24,7 +24,9 @@ export const LoginForm = () => {
 
     if (state.status === 'success') {
       ;(async () => {
-        toast.success(state.message)
+        if (state.message) {
+          toast.success(state.message)
+        }
         globalLoading.hide()
         router.push(`/private`)
       })()
