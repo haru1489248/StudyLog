@@ -1,4 +1,4 @@
-import { PrivateHeader } from "./_components/PrivateHeader"
+import { PrivateHeader } from './_components/PrivateHeader'
 
 export default function PrivateLayout({
   children,
@@ -8,7 +8,7 @@ export default function PrivateLayout({
   return (
     <div>
       <PrivateHeader />
-      {children}
+      <div className='bg-gray-50 h-screen'>{children}</div>
     </div>
   )
 }

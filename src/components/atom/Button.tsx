@@ -6,7 +6,7 @@ type ButtonProps = {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   className?: string
   disabled?: boolean
-  variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'warning'
+  variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'warning' | 'detail'
 }
 
 export const Button = ({
@@ -31,6 +31,7 @@ export const Button = ({
       'border-transparent font-medium text-white bg-red-700 hover:bg-red-800 focus:ring-red-600',
     warning:
       'border-transparent font-medium text-stone-800 bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500',
+    detail: 'border-none font-medium text-blue-600 hover:text-blue-700',
   }
 
   return (
