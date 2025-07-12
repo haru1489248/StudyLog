@@ -109,26 +109,51 @@ export const {
       },
       async authorize(credentials) {
         const parsedCredentials = z
-          .object({ email: z.string(), password: z.string().min(6) })
+          .object({
+            email: z.string().email('有効なメールアドレスを入力してください'),
+            password: z.string().min(6, 'パスワードは6文字以上で入力してください')
+          })
           .safeParse(credentials)
 
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data
-          const user = await getUser(email)
+          let user = await getUser(email)
 
-          if (!user || !user.password) {
-            return null
+          if (!user) {
+            // ユーザーが存在しない場合は作成
+            try {
+              const hashedPassword = await bcrypt.hash(password, 12)
+              user = await prisma.user.create({
+                data: {
+                  email,
+                  password: hashedPassword,
+                  role: UserRole.USER,
+                },
+              })
+            } catch (error) {
+              console.error('Failed to create user:', error)
+              return null
+            }
+          } else if (!user.password) {
+            // OAuthユーザーの場合はパスワードを設定
+            const hashedPassword = await bcrypt.hash(password, 12)
+            user = await prisma.user.update({
+              where: { id: user.id },
+              data: { password: hashedPassword },
+            })
+          } else {
+            // 既存ユーザーの場合はパスワードをチェック
+            const passwordsMatch = await bcrypt.compare(password, user.password)
+            if (!passwordsMatch) {
+              return null
+            }
           }
 
-          const passwordsMatch = await bcrypt.compare(password, user.password)
-
-          if (passwordsMatch) {
-            return {
-              id: user.id,
-              email: user.email,
-              name: user.name,
-              role: user.role,
-            }
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
           }
         }
 
@@ -168,10 +193,29 @@ export type DefaultActionFormFunction = (
 
 export const signIn: DefaultActionFormFunction = async (prevState, formData) => {
   try {
-    await authSignIn('credentials', formData)
-    return {
-      status: 'success',
-      message: 'サインインに成功しました。',
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+
+    // ユーザーが存在するかチェック（新規作成かどうかを判定）
+    const existingUser = await getUser(email)
+    const isNewUser = !existingUser
+
+    await authSignIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    })
+
+    if (isNewUser) {
+      return {
+        status: 'success',
+        message: 'アカウントが新しく作成されました。',
+      }
+    } else {
+      return {
+        status: 'success',
+        message: '', // ログインの場合は何も表示しない
+      }
     }
   } catch (error) {
     if (error instanceof AuthError) {
@@ -190,11 +234,11 @@ export const signIn: DefaultActionFormFunction = async (prevState, formData) => 
           }
       }
     }
-  }
 
-  return {
-    status: 'success',
-    message: 'サインインに成功しました。',
+    return {
+      status: 'error',
+      message: 'サインイン中にエラーが発生しました。',
+    }
   }
 }
 
