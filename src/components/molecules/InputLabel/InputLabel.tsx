@@ -11,7 +11,7 @@ interface InputLabelProps extends InputProps {
   description?: string
   errorMessage?: string
 
-  inputType?: 'textarea' | 'numeric'
+  inputType?: 'textarea' | 'numeric' | 'date'
 }
 
 export const InputLabel = React.forwardRef<HTMLInputElement, InputLabelProps>(

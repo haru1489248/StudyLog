@@ -60,7 +60,7 @@ export const GoalDisplay = () => {
       )}
       <hr className='my-4' />
       <div className='flex justify-end'>
-        <Button variant='detail'>詳細・編集</Button>
+        <Button variant='link'>詳細・編集</Button>
       </div>
     </Card>
   )

@@ -1,0 +1,27 @@
+export const AUDIT = {
+  ACTION: {
+    CREATE: 'create',
+    UPDATE: 'update',
+    DELETE: 'delete',
+    IMPORT: 'import',
+    EXPORT: 'export',
+  },
+  ENTITY: {
+    COMPANY: 'company',
+    COMPANY_RELATION: 'company_relation',
+    DEPARTMENT: 'department',
+    OFFICE: 'office',
+    USER: 'user',
+    KEYMAN: 'keyman',
+    RISK_PERSON: 'risk_person',
+    LICENSE: 'license',
+    SHOP_QUERY: 'shop_query',
+    BEE_TEST_COMPANY: 'bee_test_company',
+    BEE_TEST_DEPARTMENT: 'bee_test_department',
+    BEE_TEST_KEYMAN: 'bee_test_keyman',
+    BEE_TEST_RELATION_DATASET: 'bee_test_relation_dataset',
+    BEE_TEST_RELATION: 'bee_test_relation',
+    LOCK_ENTRY: 'lock_entry',
+    BATCH_JOB: 'batch_job',
+  },
+}

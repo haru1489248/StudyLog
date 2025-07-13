@@ -1,4 +1,4 @@
-import { RoadMapItem } from "./RoadMapItem"
+import { RoadMapItem } from './RoadMapItem'
 
 export const RoadMap = () => {
   const roadMapItems = [

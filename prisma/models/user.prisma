@@ -29,6 +29,32 @@ model User {
     
     // ソーシャルログイン用のアカウント情報
     accounts Account[]
+
+    goals Goal[]
+
+    auditLogs AuditLog[]
+}
+
+model AuditLog {
+  id       String  @id @default(uuid())
+  entity   String
+  entityId String
+  action   String
+  oldValue String?
+  newValue String?
+
+  // Relation Ids
+  actorId String
+
+  // Relations
+  actor User @relation(fields: [actorId], references: [id])
+
+  // Common
+  createdAt DateTime @default(now())
+
+  // Indexes
+  @@index([actorId])
+  @@index([entity])
 }
 
 
