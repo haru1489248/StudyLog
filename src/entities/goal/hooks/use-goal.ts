@@ -1,8 +1,9 @@
+import { toast } from 'react-toastify'
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { createGoal, CreateGoalParams } from '../actions/goal.actions'
+import { CreateGoalParams, createGoal } from '../actions/goal.actions'
 import { fetchGoals } from '../actions/goal.actions'
-import { toast } from 'react-toastify'
 
 export const useFetchGoals = ({ enabled }: { enabled?: boolean }) => {
   return useQuery({
