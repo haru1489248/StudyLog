@@ -50,7 +50,7 @@ export const RoadMapItem = ({
         {isCompleted ? (
           <Button variant='primary'>記事作成</Button>
         ) : (
-          <Button variant='detail'>詳細・編集</Button>
+          <Button variant='link'>詳細・編集</Button>
         )}
       </div>
     </div>
