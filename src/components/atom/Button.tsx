@@ -1,7 +1,8 @@
 // @/components/atom/Button.tsx
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/utils"
+import { type VariantProps, cva } from 'class-variance-authority'
+import * as React from 'react'
+
+import { cn } from '@/utils'
 
 export const buttonVariants = cva(
   // --- base ---
@@ -15,26 +16,26 @@ export const buttonVariants = cva(
       /* 色味・装飾 */
       variant: {
         /** 主使用 */
-        primary:     "bg-green-600 text-white hover:bg-green-700",
-        secondary:   "bg-stone-200 text-stone-800 hover:bg-stone-300",
-        outline:     "border border-stone-300 bg-white hover:bg-stone-50",
-        destructive: "bg-red-700  text-white hover:bg-red-800",
-        warning:     "bg-yellow-600 text-stone-900 hover:bg-yellow-700",
-        link:        "text-green-700 underline-offset-4 hover:underline",
+        primary: 'bg-green-600 text-white hover:bg-green-700',
+        secondary: 'bg-stone-200 text-stone-800 hover:bg-stone-300',
+        outline: 'border border-stone-300 bg-white hover:bg-stone-50',
+        destructive: 'bg-red-700  text-white hover:bg-red-800',
+        warning: 'bg-yellow-600 text-stone-900 hover:bg-yellow-700',
+        link: 'text-green-700 underline-offset-4 hover:underline',
         /** 入力横やアイコンだけ置く時 */
-        ghost:       "hover:bg-accent hover:text-accent-foreground",
+        ghost: 'hover:bg-accent hover:text-accent-foreground',
       },
       /* サイズ */
       size: {
-        default: "h-10 px-4 py-2",
-        sm:      "h-9 px-3",
-        lg:      "h-11 px-8",
-        icon:    "h-8 w-8 p-0",   // ← アイコン単体
+        default: 'h-10 px-4 py-2',
+        sm: 'h-9 px-3',
+        lg: 'h-11 px-8',
+        icon: 'h-8 w-8 p-0', // ← アイコン単体
       },
     },
     defaultVariants: {
-      variant: "secondary",
-      size:    "default",
+      variant: 'secondary',
+      size: 'default',
     },
   },
 )
@@ -42,8 +43,7 @@ export const buttonVariants = cva(
 /**********************
  * Button コンポーネント
  **********************/
-export type ButtonProps =
-  React.ButtonHTMLAttributes<HTMLButtonElement> &
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants>
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -55,4 +55,4 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     />
   ),
 )
-Button.displayName = "Button"
+Button.displayName = 'Button'

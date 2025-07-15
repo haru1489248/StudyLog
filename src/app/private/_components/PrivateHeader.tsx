@@ -58,9 +58,7 @@ export const PrivateHeader = () => {
           )
         })}
       </div>
-      <div className='flex items-center gap-2'>
-        {isGoal && <GoalModal />}
-      </div>
+      <div className='flex items-center gap-2'>{isGoal && <GoalModal />}</div>
     </div>
   )
 }

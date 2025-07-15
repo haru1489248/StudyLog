@@ -57,10 +57,7 @@ DialogContent.displayName = DialogPrimitive.Content.displayName
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className={clsx(
-        'flex flex-row gap-1 pb-5 border-b border-gray-200',
-        className,
-      )}
+      className={clsx('flex flex-row gap-1 pb-5 border-b border-gray-200', className)}
       {...props}
     />
   )
