@@ -1,47 +1,58 @@
-import React from 'react'
+// @/components/atom/Button.tsx
+import { type VariantProps, cva } from 'class-variance-authority'
+import * as React from 'react'
 
-type ButtonProps = {
-  type?: 'button' | 'submit' | 'reset'
-  children: React.ReactNode
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
-  className?: string
-  disabled?: boolean
-  variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'warning' | 'detail'
-}
+import { cn } from '@/utils'
 
-export const Button = ({
-  type = 'button',
-  children,
-  onClick,
-  className = '',
-  disabled = false,
-  variant = 'secondary',
-}: ButtonProps) => {
-  const baseStyles =
-    'group relative flex justify-center py-2 px-4 border text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2'
+export const buttonVariants = cva(
+  // --- base ---
+  `inline-flex items-center justify-center whitespace-nowrap
+   rounded-md text-sm font-medium transition-colors
+   focus-visible:outline-none focus-visible:ring-2
+   focus-visible:ring-ring focus-visible:ring-offset-2
+   disabled:pointer-events-none disabled:opacity-50`,
+  {
+    variants: {
+      /* 色味・装飾 */
+      variant: {
+        /** 主使用 */
+        primary: 'bg-green-600 text-white hover:bg-green-700',
+        secondary: 'bg-stone-200 text-stone-800 hover:bg-stone-300',
+        outline: 'border border-stone-300 bg-white hover:bg-stone-50',
+        destructive: 'bg-red-700  text-white hover:bg-red-800',
+        warning: 'bg-yellow-600 text-stone-900 hover:bg-yellow-700',
+        link: 'text-green-700 underline-offset-4 hover:underline',
+        /** 入力横やアイコンだけ置く時 */
+        ghost: 'hover:bg-accent hover:text-accent-foreground',
+      },
+      /* サイズ */
+      size: {
+        default: 'h-10 px-4 py-2',
+        sm: 'h-9 px-3',
+        lg: 'h-11 px-8',
+        icon: 'h-8 w-8 p-0', // ← アイコン単体
+      },
+    },
+    defaultVariants: {
+      variant: 'secondary',
+      size: 'default',
+    },
+  },
+)
 
-  const variantStyles = {
-    primary:
-      'text-green-600 font-bold bg-green-100 border-green-400 hover:bg-green-300 focus:ring-green-300',
-    secondary:
-      'border-transparent font-medium text-stone-800 bg-stone-200 hover:bg-stone-300 focus:ring-stone-400',
-    outline:
-      'border-stone-300 font-medium text-stone-800 bg-white hover:bg-stone-50 focus:ring-stone-500',
-    danger:
-      'border-transparent font-medium text-white bg-red-700 hover:bg-red-800 focus:ring-red-600',
-    warning:
-      'border-transparent font-medium text-stone-800 bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500',
-    detail: 'border-none font-medium text-blue-600 hover:text-blue-700',
-  }
+/**********************
+ * Button コンポーネント
+ **********************/
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonVariants>
 
-  return (
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, ...props }, ref) => (
     <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
-    >
-      {children}
-    </button>
-  )
-}
+      ref={ref}
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  ),
+)
+Button.displayName = 'Button'

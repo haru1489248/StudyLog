@@ -8,8 +8,11 @@ import { IoSettingsOutline } from 'react-icons/io5'
 import { LuGoal } from 'react-icons/lu'
 import { MdOutlineDashboard } from 'react-icons/md'
 
+import { GoalModal } from '../goals/_components/GoalModal'
+
 export const PrivateHeader = () => {
   const pathname = usePathname()
+  const isGoal = pathname.includes('/private/goals')
 
   const icons = [
     {
@@ -34,25 +37,28 @@ export const PrivateHeader = () => {
     },
   ]
   return (
-    <div className='flex items-center p-4 mx-4 gap-4'>
-      <div className='flex items-center gap-2'>
-        <FiBookOpen className='text-5xl text-blue-600' />
-        <h1 className='text-2xl font-black'>StudyLog</h1>
+    <div className='flex items-center p-4 mx-4 gap-4 justify-between'>
+      <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-2'>
+          <FiBookOpen className='text-5xl text-blue-600' />
+          <h1 className='text-2xl font-black'>StudyLog</h1>
+        </div>
+        {icons.map((icon) => {
+          const isActive = pathname === icon.href
+          return (
+            <div key={icon.href} className='ml-2'>
+              <Link
+                href={icon.href}
+                className={`flex items-center gap-2 p-2 ${isActive ? 'text-blue-600 bg-gray-100 rounded-md' : 'text-gray-500'}`}
+              >
+                {icon.icon}
+                {icon.name}
+              </Link>
+            </div>
+          )
+        })}
       </div>
-      {icons.map((icon) => {
-        const isActive = pathname === icon.href
-        return (
-          <div key={icon.href} className='ml-2'>
-            <Link
-              href={icon.href}
-              className={`flex items-center gap-2 p-2 ${isActive ? 'text-blue-600 bg-gray-100 rounded-md' : 'text-gray-500'}`}
-            >
-              {icon.icon}
-              {icon.name}
-            </Link>
-          </div>
-        )
-      })}
+      <div className='flex items-center gap-2'>{isGoal && <GoalModal />}</div>
     </div>
   )
 }

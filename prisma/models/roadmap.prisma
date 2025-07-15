@@ -1,0 +1,45 @@
+model Goal {
+    id String @id @default(uuid())
+    title String
+    description String
+    planStartDate DateTime
+    planEndDate DateTime
+    status Status @default(NOT_STARTED)
+    roadmaps RoadMap[]
+    user User @relation(fields: [userId], references: [id])
+    userId String
+
+    @@index([userId])
+}
+
+model RoadMapItem {
+    id String @id @default(uuid())
+    title String
+    description String
+    scheduleTime String
+    actualTime String?
+    isCompleted Boolean @default(false)
+    roadMap RoadMap @relation(fields: [roadMapId], references: [id])
+    roadMapId String
+
+    @@index([roadMapId])
+}
+model RoadMap {
+    id String @id @default(uuid())
+    title String
+    description String
+    planStartDate DateTime
+    planEndDate DateTime
+    status Status @default(NOT_STARTED)
+    goal Goal @relation(fields: [goalId], references: [id])
+    goalId String
+    roadMapItems RoadMapItem[]
+
+    @@index([goalId])
+}
+
+enum Status {
+    NOT_STARTED
+    IN_PROGRESS
+    COMPLETED
+}

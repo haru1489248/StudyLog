@@ -6,9 +6,9 @@ export default function PrivateLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div>
+    <div className='h-screen flex flex-col'>
       <PrivateHeader />
-      <div className='bg-gray-50 h-screen'>{children}</div>
+      <div className='bg-gray-50 flex-1 overflow-auto'>{children}</div>
     </div>
   )
 }

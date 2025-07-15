@@ -11,10 +11,13 @@ interface InputLabelProps extends InputProps {
   description?: string
   errorMessage?: string
 
-  inputType?: 'textarea' | 'numeric'
+  inputType?: 'textarea' | 'numeric' | 'date'
 }
 
-export const InputLabel = React.forwardRef<HTMLInputElement, InputLabelProps>(
+export const InputLabel = React.forwardRef<
+  HTMLInputElement | HTMLTextAreaElement,
+  InputLabelProps
+>(
   (
     { label, id, description, errorMessage, className, inputType, required, ...props },
     ref,
@@ -41,19 +44,19 @@ export const InputLabel = React.forwardRef<HTMLInputElement, InputLabelProps>(
         )}
 
         {inputType === 'textarea' && (
-          // @ts-expect-error - Textarea is not defined in the current file
           <Textarea
             id={id}
+            ref={ref as React.Ref<HTMLTextAreaElement>}
             aria-describedby={describedBy}
             aria-invalid={Boolean(errorMessage) || undefined}
-            {...props}
+            {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
           />
         )}
 
         {!inputType && (
           <Input
             id={id}
-            ref={ref}
+            ref={ref as React.Ref<HTMLInputElement>}
             aria-describedby={describedBy}
             aria-invalid={Boolean(errorMessage) || undefined}
             {...props}

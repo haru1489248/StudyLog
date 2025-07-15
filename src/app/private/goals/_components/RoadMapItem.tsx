@@ -1,6 +1,7 @@
-import { Button } from '@/components/atom/Button'
 import { useState } from 'react'
 import { AiOutlineCheckCircle } from 'react-icons/ai'
+
+import { Button } from '@/components/atom/Button'
 
 export const RoadMapItem = ({
   item,
@@ -15,8 +16,8 @@ export const RoadMapItem = ({
 }) => {
   const [isCompleted, setIsCompleted] = useState(item.isCompleted)
   return (
-      <div className='flex justify-between gap-2'>
-        <div className='flex items-center gap-2'>
+    <div className='flex justify-between gap-2'>
+      <div className='flex items-center gap-2'>
         {isCompleted ? (
           <AiOutlineCheckCircle
             className='bg-green-500 rounded-full text-white text-xm cursor-pointer'
@@ -44,14 +45,14 @@ export const RoadMapItem = ({
             )}
           </div>
         </div>
-        </div>
-        <div className='flex items-center gap-2'>
-        {isCompleted ? (
-            <Button variant='primary'>記事作成</Button>
-        ) : (
-            <Button variant='detail'>詳細・編集</Button>
-        )}
-        </div>
       </div>
+      <div className='flex items-center gap-2'>
+        {isCompleted ? (
+          <Button variant='primary'>記事作成</Button>
+        ) : (
+          <Button variant='link'>詳細・編集</Button>
+        )}
+      </div>
+    </div>
   )
 }

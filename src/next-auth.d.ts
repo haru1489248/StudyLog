@@ -4,12 +4,10 @@ import { UserRole } from '@prisma/client'
 
 declare module 'next-auth' {
   interface Session {
-    user: {
-      role: UserRole
-    }
+    user?: User
   }
 
   interface User {
-    role: UserRole
+    role?: UserRole
   }
 }

@@ -28,6 +28,12 @@ import { QueryClient, QueryClientProvider, isServer } from '@tanstack/react-quer
 
 // In Next.js, this file would be called: app/providers.tsx
 
+// In Next.js, this file would be called: app/providers.tsx
+
+// In Next.js, this file would be called: app/providers.tsx
+
+// In Next.js, this file would be called: app/providers.tsx
+
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
